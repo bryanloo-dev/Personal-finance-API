@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev":"ts-node-dev --respawn --transpile-only src/server.ts",
+    "dev": "ts-node-dev --respawn --transpile-only src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
     "test": "jest --runInBand",
@@ -45,5 +45,17 @@
     "ts-jest": "^29.4.12",
     "ts-node-dev": "^2.0.0",
     "typescript": "^7.0.2"
-  }
+  },
+  "directories": {
+    "doc": "docs",
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bryanloo-dev/Personal-finance-API.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bryanloo-dev/Personal-finance-API/issues"
+  },
+  "homepage": "https://github.com/bryanloo-dev/Personal-finance-API#readme"
 }
