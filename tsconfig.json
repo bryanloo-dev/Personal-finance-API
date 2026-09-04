@@ -27,7 +27,7 @@
     "declarationMap": true,
 
     // Stricter Typechecking Options
-    
+
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
 
@@ -56,6 +56,6 @@
     "forceConsistentCasingInFileNames": true,
   },
 
-  "include": ["src/**/*.ts"],
+  "include": ["src/**/*.ts", "src/routes/auth.routes"],
   "exclude": ["node_modules", "dist", "tests"]
 }
