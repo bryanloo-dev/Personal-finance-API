@@ -127,7 +127,7 @@ export async function listTransactions(
                 throw new AppError(404, "Transaction not foun");
             }
 
-            req.status(204).send();
+            res.status(204).send();
 
         } catch (error) {
             next(error);
