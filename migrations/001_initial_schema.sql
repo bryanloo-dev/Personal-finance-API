@@ -44,6 +44,7 @@ CREATE TABLE budgets (
   amount NUMERIC(14, 2) NOT NULL CHECK (amount > 0),
   month DATE NOT NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
   UNIQUE(user_id, category_id, month)
 );
 
@@ -62,11 +63,21 @@ CREATE TABLE recurring_transactions (
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
-CREATE INDEX idx_transactions_user_date
+CREATE INDEX IF NOT EXISTS idx_categories_user_id
+  ON categories(user_id);
+
+CREATE INDEX IF NOT EXISTS idx_transactions_user_date
   ON transactions(user_id, transaction_date DESC);
 
-CREATE INDEX idx_transactions_user_type
+CREATE INDEX IF NOT EXISTS idx_transactions_user_type
   ON transactions(user_id, type);
 
-CREATE INDEX idx_transactions_search
+CREATE INDEX IF NOT EXISTS idx_transactions_category_date
+  ON transactions(category_id, transaction_date);
+
+CREATE INDEX IF NOT EXISTS idx_transactions_search
   ON transactions USING gin(to_tsvector('english', COALESCE(description, '')));
+
+CREATE INDEX IF NOT EXISTS idx_budgets_user_month
+  ON budgets(user_id, month);
+

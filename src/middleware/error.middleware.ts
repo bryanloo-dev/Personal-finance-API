@@ -36,4 +36,22 @@ export function errorHandler(
                     : error.message,
         },
     });
+
+    const databaseError = error as { code?: string };
+
+    if (databaseError.code == "23505") {
+        return res.status(409).json({
+            error: {
+                message: "A record with those values already exists"
+            }
+        });
+    }
+
+    console.error(error);
+
+    return res.status(500).json({
+        error: {
+            message: "Internal server error"
+        }
+    });
 }
