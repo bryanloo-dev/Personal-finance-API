@@ -30,7 +30,6 @@ export async function createTransaction(
 
         res.status(201).json({ transaction: result.rows[0] });
     
-    
     } catch (error) {
 
         next(error);
@@ -83,8 +82,8 @@ export async function listTransactions(
 
         values.push(limit, offset);
 
-        const transaction = await query(
-            `SELECT t.*, c.name AS catgory_name, c.color AS category_color
+        const transactions = await query(
+            `SELECT t.*, c.name AS category_name, c.color AS category_color
             FROM transactions t
             LEFT JOIN categories c ON c.id = t.category_id
             WHERE ${where}
@@ -93,24 +92,28 @@ export async function listTransactions(
             values
         );
 
-        const total = await query<{ const: string }>{
-            `SELECT COUNT{*} FROM transactions t WHERE ${where}`,
-            values.slice(0, 2)
-        };
+        const total = await query<{ count: string }>(
+            `SELECT COUNT(*) AS count FROM transactions t WHERE ${where}`,
+            values.slice(0, -2)
+        );
 
-        resizeBy.json({
+        const totalCount = Number(total.rows[0]?.count ?? 0);
+
+        res.json({
             data:transactions.rows,
             pagination: {
                 page,
                 limit,
-                total:Number(totalmem.rows[0].count),
-                totalPages: Math.cell(Number(total.rows[0].count) / limit)
+                total: totalCount,
+                totalPages: Math.ceil(totalCount/ limit)
             }
         });
 
     } catch (error) {
+
         next(error);
     }
+}
 
     export async function deleteTransaction(
         req: AuthRequest,
@@ -130,6 +133,7 @@ export async function listTransactions(
             res.status(204).send();
 
         } catch (error) {
+
             next(error);
         }    
 }
